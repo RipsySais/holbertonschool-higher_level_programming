@@ -5,5 +5,5 @@ def uppercase(str):
         sexy = ord(j)
         if (sexy >= 97 and sexy <= 122):
             j = chr(sexy - 32)
-            print("{:j}".format(j), end="")
+        print("{}".format(j), end="")
     print("")
