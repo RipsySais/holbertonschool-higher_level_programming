@@ -6,9 +6,9 @@ if number >= 0:
 elif number < 0:
     last_digit = ((number * -1) % 10) * -1
 if last_digit > 5:
-    str = 'last digit de {0} est {1} et est supérieur à 5'
-elif last_digit < 6 and last_digit != 0:
-    str = 'last digit de {0} est {1} et est inféreur à 6 non à 0'
-elif last_digit == 0:
-    str = 'last digit de {0} est {1} et et est {0}'
+    str = 'last_digit of {0} is {1} and is greater than 5'
+elif (last_digit < 6 and last_digit != 0):
+    str = 'last digit of {0} is {1} and is less than 6 and not 0'
+elif (last_digit == 0):
+    str = 'last digit of {0} is and is 0'
 print(str.format(number, last_digit))
