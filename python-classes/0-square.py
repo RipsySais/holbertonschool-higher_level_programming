@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
-class Square:
+""" Square class with size attribute"""
 
+
+class Square:
+    """ a square class"""
     pass
