@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-
-"""This module creates a class Rectangle."""
+"""This module defines a class Rectangle."""
 
 
 class Rectangle:
