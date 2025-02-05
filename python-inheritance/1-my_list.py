@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-""""Module that defines a class MyList that inherits from list"""
-"""module qui définit une classe MyList qui hérite de list"""
+"""
+Module that defines a class MyList that inherits from list
+"""
 
 
 class MyList(list):
@@ -12,4 +13,5 @@ class MyList(list):
         """
         Prints the list, but sorted (ascending sort)
         """
-        print(sorted(self))
+        sorted_list = sorted(self)
+        print(sorted_list)
