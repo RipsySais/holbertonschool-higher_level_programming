@@ -1,0 +1,26 @@
+>>> text_indentation("Bonjour. Comment vas-tu ? Bien, merci : et toi ?")
+Bonjour.
+
+Comment vas-tu ?
+
+Bien, merci :
+
+et toi ?
+
+>>> text_indentation("")
+>>> text_indentation("Simple phrase sans ponctuation")
+Simple phrase sans ponctuation
+
+>>> text_indentation("Phrase avec ? et : dedans. Et un point.")
+Phrase avec ?
+
+et :
+
+dedans.
+
+Et un point.
+
+>>> text_indentation(42)
+Traceback (most recent call last):
+    ...
+TypeError: le texte doit être une chaîne
