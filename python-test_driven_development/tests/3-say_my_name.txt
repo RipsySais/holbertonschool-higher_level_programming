@@ -1,0 +1,15 @@
+>>> say_my_name = __import__('3-say_my_name').say_my_name
+>>> say_my_name("John", "Smith")
+Je m'appelle John Smith
+>>> say_my_name("Walter", "White")
+Je m'appelle Walter White
+>>> say_my_name("Bob")
+Je m'appelle Bob
+>>> say_my_name(12, "White")
+Traceback (most recent call last):
+    ...
+TypeError: Le prenom doit etre une chaine de caracteres
+>>> say_my_name("Bob", 42)
+Traceback (most recent call last):
+    ...
+TypeError: Le nom doit etre une chaine de caracteres
