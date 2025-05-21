@@ -1,0 +1,37 @@
+>>> matrix_divided = __import__('2-matrix_divided').matrix_divided
+>>> matrix = [[1, 2, 3], [4, 5, 6]]
+>>> matrix_divided(matrix, 3)
+[[0.33, 0.67, 1.0], [1.33, 1.67, 2.0]]
+>>> matrix  # la matrice d'origine ne doit pas être modifiée
+[[1, 2, 3], [4, 5, 6]]
+
+>>> matrix_divided([[1.5, 2.5], [3.5, 4.5]], 2)
+[[0.75, 1.25], [1.75, 2.25]]
+
+>>> matrix_divided([[1, 2], [3, 4]], 1)
+[[1.0, 2.0], [3.0, 4.0]]
+
+>>> matrix_divided([[1, 2], [3, 4]], 0)
+Traceback (most recent call last):
+    ...
+ZeroDivisionError: Division par zéro
+
+>>> matrix_divided([[1, 2], [3]], 2)
+Traceback (most recent call last):
+    ...
+TypeError: Chaque ligne de la matrice doit avoir la même taille
+
+>>> matrix_divided([[1, 2], ["3", 4]], 2)
+Traceback (most recent call last):
+    ...
+TypeError: La matrice doit être une matrice (liste de listes) d’entiers ou de flottants
+
+>>> matrix_divided("not a matrix", 2)
+Traceback (most recent call last):
+    ...
+TypeError: La matrice doit être une matrice (liste de listes) d’entiers ou de flottants
+
+>>> matrix_divided([[1, 2], [3, 4]], "2")
+Traceback (most recent call last):
+    ...
+TypeError: La variable div doit être un nombre
