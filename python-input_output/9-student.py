@@ -6,7 +6,6 @@ class Student:
     def __init__(self, first_name, last_name, age):
         """
         Initialise une nouvelle instance de la classe Student.
-        
         :param first_name: Le prénom de l'étudiant.
         :param last_name: Le nom de famille de l'étudiant.
         :param age: L'âge de l'étudiant.
@@ -18,7 +17,6 @@ class Student:
     def to_json(self):
         """
         Retourne une représentation sous forme de dictionnaire de l'étudiant.
-        
         :return: Un dictionnaire contenant les attributs de l'étudiant.
         """
         return self.__dict__
