@@ -1,21 +1,31 @@
 #!/usr/bin/python3
-def say_my_name(prenom, nom=""):
+"""
+    Write a function that prints My name is <first name> <last name>
+    Prototype: def say_my_name(first_name, last_name="")
+    first_name and last_name must be strings
+    Return: nothing
+"""
+
+
+def say_my_name(first_name, last_name=""):
     """
-    Affiche "Je m'appelle <prenom> <nom>".
-
-    Arguments:
-    prenom -- prenom, doit etre une chaine de caracteres
-    nom -- nom, doit etre une chaine de caracteres (optionnel)
-
-    Exceptions:
-    TypeError -- si prenom ou nom ne sont pas des chaines de caracteres
+    Function that prints a string with the first name and last name
+    Args:
+        first_name: string
+        last_name: string
+    Returns:
+        nothing
+    Raises:
+        TypeError: If first_name or last_name is not a string
     """
-    if not isinstance(prenom, str):
-        raise TypeError("Le prenom doit etre une chaine de caracteres")
-    if not isinstance(nom, str):
-        raise TypeError("Le nom doit etre une chaine de caracteres")
+    """Prints a string with <first_name>
+    and <last_name>.
+    """
 
-    if nom:
-        print(f"Je m'appelle {prenom} {nom}")
-    else:
-        print(f"Je m'appelle {prenom}")
+    if type(first_name) is not str:
+        raise TypeError("first_name must be a string")
+
+    if type(last_name) is not str:
+        raise TypeError("last_name must be a string")
+
+    print("My name is {} {}".format(first_name, last_name))
