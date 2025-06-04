@@ -21,12 +21,4 @@ class Student:
         
         :return: Un dictionnaire contenant les attributs de l'étudiant.
         """
-        return {
-            "first_name": self.first_name,
-            "last_name": self.last_name,
-            "age": self.age
-        }
-
-# Exemple d'utilisation :
-student1 = Student("John", "Doe", 23)
-student2 = Student("Bob", "Smith", 27)
+        return self.__dict__
