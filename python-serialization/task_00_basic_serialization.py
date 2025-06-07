@@ -1,30 +1,29 @@
 #!/usr/bin/python3
 """
-Sérialization and deserialization of Python objects
+Sérialisation et désérialisation d'objets Python.
 """
-
 
 import json
 
 
-def seralize_and_save_to_file(data, filename):
+def serialize_and_save_to_file(data, filename):
     """
-    Serialize data to a JSON file.
+    Sérialise les données dans un fichier JSON.
     Args:
-        data (dict): The data to serialize.
-        filename (str): The name of the file to save the serialized data.
+        data (dict): Les données à sérialiser.
+        filename (str): Le nom du fichier JSON.
     """
-    with open(filename, 'w', encoding='UTF-8') as f:
-        json.dump(data, file, ensure_ascii=False, indent=4)
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
 
 
-def load_and_deserialize_from_file(filename):
+def load_and_deserialize(filename):
     """
-    Load and deserialize data from a JSON file.
+    Charge et désérialise un fichier JSON.
     Args:
-        filename (str): The name of the file to load the serialized data from.
+        filename (str): Le nom du fichier JSON à charger.
     Returns:
-        dict: The deserialized data.
+        dict: Les données désérialisées.
     """
-    with open(filename, 'r', encoding='UTF-8') as f:
+    with open(filename, 'r', encoding='utf-8') as f:
         return json.load(f)
