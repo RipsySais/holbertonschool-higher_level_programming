@@ -1,0 +1,29 @@
+Voici un résumé des différences entre HTTP et HTTPS, ainsi que des informations sur la structure, les méthodes et les codes d'état HTTP :
+
+Différences entre HTTP et HTTPS
+
+HTTP (Hypertext Transfer Protocol) et HTTPS (Hypertext Transfer Protocol Secure) sont deux protocoles de communication utilisés pour transférer des données sur le web. La différence fondamentale réside dans la sécurité.
+
+HTTP transmet les données en texte brut, ce qui signifie qu'elles peuvent être interceptées et lues par quiconque espionne la connexion.
+HTTPS ajoute une couche de chiffrement à HTTP en utilisant TLS (Transport Layer Security) ou SSL (Secure Sockets Layer), ce qui rend les données illisibles pour les personnes non autorisées. Le "S" dans HTTPS signifie "sécurisé" .
+Les sites web qui gèrent des informations sensibles, comme les données bancaires ou les informations de connexion, utilisent généralement HTTPS pour protéger les données des utilisateurs . Les connexions HTTPS utilisent le port 443 par défaut, tandis que HTTP utilise le port 80 . Pour qu'un site web utilise HTTPS, il doit posséder un certificat SSL/TLS valide, qui est délivré par une autorité de certification pour authentifier le site et permettre le chiffrement.
+
+Structure HTTP
+
+Lorsque vous visitez une page web et examinez l'onglet "Réseau" dans les outils de développement de votre navigateur, vous pouvez observer les requêtes et réponses HTTP. Chaque requête contient des informations telles que la méthode HTTP, le chemin de la ressource demandée, les en-têtes (qui fournissent des détails sur la requête et le client) et parfois un corps (pour les données envoyées au serveur). La réponse du serveur inclut également des en-têtes, un code d'état (indiquant le résultat de la requête) et le corps de la réponse (qui contient généralement les données demandées, comme le code HTML de la page).
+
+Méthodes et codes d'état HTTP courants
+
+Voici quelques méthodes HTTP courantes et leurs utilisations :
+
+GET : Utilisé pour demander des données à une ressource spécifiée. Par exemple, récupérer une page web ou des données depuis une API.
+POST : Utilisé pour envoyer des données à un serveur pour créer ou mettre à jour une ressource. Par exemple, soumettre un formulaire de connexion ou ajouter un article à un panier.
+PUT : Utilisé pour envoyer des données à un serveur pour créer ou remplacer une ressource à une URL spécifique.
+DELETE : Utilisé pour supprimer une ressource spécifiée.
+Voici quelques codes d'état HTTP courants :
+
+200 OK : La requête a réussi.
+301 Moved Permanently : La ressource demandée a été déplacée de manière permanente vers une nouvelle URL. Scénario : Accéder à une ancienne URL qui redirige vers la nouvelle version du site.
+404 Not Found : La ressource demandée n'a pas été trouvée sur le serveur. Scénario : Essayer d'accéder à une page qui a été supprimée ou dont l'URL est incorrecte.
+500 Internal Server Error : Le serveur a rencontré une condition inattendue qui l'a empêché de répondre à la requête. Scénario : Un problème côté serveur empêche le chargement de la page.
+503 Service Unavailable : Le serveur n'est pas prêt à gérer la requête. Scénario : Le serveur est en surcharge ou en maintenance.
