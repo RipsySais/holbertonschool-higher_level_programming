@@ -51,7 +51,7 @@ class SimpleAPIHandler(BaseHTTPRequestHandler):
             self.wfile.write(b"Point de terminaison introuvable")
 
 
-def run(server_class=HTTPServer, handler_class=SimpleAPIHandler, port=8001):
+def run(server_class=HTTPServer, handler_class=SimpleAPIHandler, port=8000):
     """Start the HTTP server"""
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
