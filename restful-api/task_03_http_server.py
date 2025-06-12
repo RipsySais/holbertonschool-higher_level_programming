@@ -42,6 +42,7 @@ class SimpleAPIHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b'Point de terminaison introuvable')
 
+
 def run(server_class=HTTPServer, handler_class=SimpleAPIHandler, port=8000):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
@@ -50,6 +51,7 @@ def run(server_class=HTTPServer, handler_class=SimpleAPIHandler, port=8000):
         httpd.serve_forever()
     except KeyboardInterrupt:
         print("\nServer stopped manually.")
+
 
 if __name__ == '__main__':
     run()
