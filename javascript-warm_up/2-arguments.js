@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/node
 // Cette ligne indique que le script doit être exécuté avec Node.js
 
 // Récupère les arguments passés au script en ignorant les deux premiers éléments de process.argv
