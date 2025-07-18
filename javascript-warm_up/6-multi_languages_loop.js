@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/node
 // Script qui affiche 3 langages en utilisant un tableau et une boucle
 
 const languages = [
