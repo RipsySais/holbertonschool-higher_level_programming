@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/node
 // Script qui affiche deux arguments sous la forme "arg1 is arg2"
 
 // Récupère les deux premiers arguments
