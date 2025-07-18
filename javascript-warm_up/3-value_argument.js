@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/node
 // Script qui affiche le premier argument passé ou "No argument" si aucun argument
 
 // Récupère le premier argument (indice 2 dans process.argv)
