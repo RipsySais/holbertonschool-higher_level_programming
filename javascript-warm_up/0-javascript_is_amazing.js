@@ -1,4 +1,5 @@
-#!/usr/bin/node
+#!/usr/bin/env node
+
 /*
   Script : 0-javascript_is_amazing.js
   Objectif : Déclarer une constante contenant une chaîne de caractères
