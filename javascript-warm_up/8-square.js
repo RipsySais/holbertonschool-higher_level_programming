@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/node
 // Script qui dessine un carré de X
 
 const size = parseInt(process.argv[2]);
