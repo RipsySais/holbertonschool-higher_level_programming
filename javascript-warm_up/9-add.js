@@ -1,7 +1,7 @@
 #!/usr/bin/node
 // Script qui additionne deux nombres
 
-function add(a, b) {
+function add (a, b) {
   return a + b;
 }
 
