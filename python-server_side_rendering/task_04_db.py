@@ -21,7 +21,6 @@ def read_csv_products():
         with open('products.csv', 'r') as f:
             reader = csv.DictReader(f)
             for row in reader:
-                # Convert price to float and id to int
                 row['price'] = float(row['price'])
                 row['id'] = int(row['id'])
                 products.append(row)
@@ -33,7 +32,7 @@ def read_sql_products():
     """Read products from SQLite database"""
     try:
         conn = sqlite3.connect('products.db')
-        conn.row_factory = sqlite3.Row  # Return rows as dictionaries
+        conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM Products')
         products = [dict(row) for row in cursor.fetchall()]
@@ -47,7 +46,6 @@ def display_products():
     source = request.args.get('source', '').lower()
     product_id = request.args.get('id', type=int)
     
-    # Read data based on source
     if source == 'json':
         products = read_json_products()
     elif source == 'csv':
@@ -56,24 +54,22 @@ def display_products():
         products = read_sql_products()
     else:
         return render_template('product_display.html', 
-                             error="Wrong source. Please use 'json', 'csv', or 'sql'.")
+                            error="Wrong source. Please use 'json', 'csv', or 'sql'.")
     
     if products is None:
         return render_template('product_display.html', 
-                             error=f"Error reading {source} data source.")
+                            error=f"Error reading {source} data source.")
     
-    # Filter by ID if provided
     if product_id is not None:
         filtered = [p for p in products if p['id'] == product_id]
         if not filtered:
             return render_template('product_display.html', 
-                                 error=f"Product with ID {product_id} not found.")
+                                error="Product not found")
         products = filtered
     
     return render_template('product_display.html', products=products)
 
 if __name__ == '__main__':
-    # Create database if it doesn't exist
     if not os.path.exists('products.db'):
         import create_db
         create_db.create_database()
