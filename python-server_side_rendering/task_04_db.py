@@ -86,7 +86,8 @@ def display_products():
     elif source == 'sql':
         data = load_from_sqlite()
     else:
-        return "Wrong source", 400
+        # Affiche un message d'erreur avec code 200
+        return render_template("product_display.html", error=f"Source inconnue : {source}", products=None)
 
     if isinstance(data, dict) and 'error' in data:
         return render_template("product_display.html", error=data['error'], products=None)
