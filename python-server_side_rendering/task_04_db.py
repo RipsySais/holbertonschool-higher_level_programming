@@ -1,8 +1,3 @@
-#!/usr/bin/env python3
-"""
-Flask app to display product data from JSON, CSV, or SQLite database
-"""
-
 from flask import Flask, render_template, request
 import json
 import csv
@@ -11,89 +6,75 @@ import os
 
 app = Flask(__name__)
 
-# Path constants
-JSON_FILE = 'products.json'
-CSV_FILE = 'products.csv'
-DB_FILE = 'products.db'
-
-
-def load_from_json():
-    """Load product data from JSON file"""
+def read_json_products():
+    """Read products from JSON file"""
     try:
-        with open(JSON_FILE, 'r') as f:
+        with open('products.json', 'r') as f:
             return json.load(f)
-    except Exception as e:
-        return {"error": f"Failed to load JSON data: {str(e)}"}
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
 
-
-def load_from_csv():
-    """Load product data from CSV file"""
+def read_csv_products():
+    """Read products from CSV file"""
     try:
         products = []
-        with open(CSV_FILE, 'r') as f:
+        with open('products.csv', 'r') as f:
             reader = csv.DictReader(f)
             for row in reader:
+                # Convert price to float and id to int
                 row['price'] = float(row['price'])
+                row['id'] = int(row['id'])
                 products.append(row)
         return products
-    except Exception as e:
-        return {"error": f"Failed to load CSV data: {str(e)}"}
+    except (FileNotFoundError, csv.Error, ValueError):
+        return None
 
-
-def load_from_sqlite():
-    """Load product data from SQLite database"""
-    if not os.path.exists(DB_FILE):
-        return {"error": "SQLite database file not found."}
+def read_sql_products():
+    """Read products from SQLite database"""
     try:
-        conn = sqlite3.connect(DB_FILE)
+        conn = sqlite3.connect('products.db')
+        conn.row_factory = sqlite3.Row  # Return rows as dictionaries
         cursor = conn.cursor()
-        cursor.execute("SELECT id, name, category, price FROM Products")
-        rows = cursor.fetchall()
-        products = []
-        for row in rows:
-            products.append({
-                "id": row[0],
-                "name": row[1],
-                "category": row[2],
-                "price": row[3]
-            })
+        cursor.execute('SELECT * FROM Products')
+        products = [dict(row) for row in cursor.fetchall()]
         conn.close()
         return products
-    except Exception as e:
-        return {"error": f"Database error: {str(e)}"}
-
-
-@app.route('/')
-def home():
-    return '''
-        <h2>Welcome to My Product App</h2>
-        <ul>
-            <li><a href="/products?source=json">View Products (JSON)</a></li>
-            <li><a href="/products?source=csv">View Products (CSV)</a></li>
-            <li><a href="/products?source=sql">View Products (SQLite)</a></li>
-        </ul>
-    '''
-
+    except sqlite3.Error:
+        return None
 
 @app.route('/products')
 def display_products():
-    """Display products from the selected source"""
-    source = request.args.get('source')
+    source = request.args.get('source', '').lower()
+    product_id = request.args.get('id', type=int)
+    
+    # Read data based on source
     if source == 'json':
-        data = load_from_json()
+        products = read_json_products()
     elif source == 'csv':
-        data = load_from_csv()
+        products = read_csv_products()
     elif source == 'sql':
-        data = load_from_sqlite()
+        products = read_sql_products()
     else:
-        # Affiche un message d'erreur avec code 200
-        return render_template("product_display.html", error=f"Source inconnue : {source}", products=None)
+        return render_template('product_display.html', 
+                             error="Wrong source. Please use 'json', 'csv', or 'sql'.")
+    
+    if products is None:
+        return render_template('product_display.html', 
+                             error=f"Error reading {source} data source.")
+    
+    # Filter by ID if provided
+    if product_id is not None:
+        filtered = [p for p in products if p['id'] == product_id]
+        if not filtered:
+            return render_template('product_display.html', 
+                                 error=f"Product with ID {product_id} not found.")
+        products = filtered
+    
+    return render_template('product_display.html', products=products)
 
-    if isinstance(data, dict) and 'error' in data:
-        return render_template("product_display.html", error=data['error'], products=None)
-
-    return render_template("product_display.html", products=data, error=None)
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    # Create database if it doesn't exist
+    if not os.path.exists('products.db'):
+        import create_db
+        create_db.create_database()
+    app.run(debug=True, port=5000)
