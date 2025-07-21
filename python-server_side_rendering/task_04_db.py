@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Flask app to display product data from JSON, CSV, or SQLite based on query parameter.
+Flask app to display product data from JSON, CSV, or SQLite database
 """
 
 from flask import Flask, render_template, request
@@ -11,39 +11,45 @@ import os
 
 app = Flask(__name__)
 
-def read_json_data(filepath):
-    try:
-        with open(filepath, 'r') as f:
-            return json.load(f)
-    except Exception:
-        return []
+# Path constants
+JSON_FILE = 'products.json'
+CSV_FILE = 'products.csv'
+DB_FILE = 'products.db'
 
-def read_csv_data(filepath):
-    products = []
+
+def load_from_json():
+    """Load product data from JSON file"""
     try:
-        with open(filepath, newline='') as f:
+        with open(JSON_FILE, 'r') as f:
+            return json.load(f)
+    except Exception as e:
+        return {"error": f"Failed to load JSON data: {str(e)}"}
+
+
+def load_from_csv():
+    """Load product data from CSV file"""
+    try:
+        products = []
+        with open(CSV_FILE, 'r') as f:
             reader = csv.DictReader(f)
             for row in reader:
-                try:
-                    row["id"] = int(row["id"])
-                    row["price"] = float(row["price"])
-                    products.append(row)
-                except ValueError:
-                    continue
-    except Exception:
-        pass
-    return products
+                row['price'] = float(row['price'])
+                products.append(row)
+        return products
+    except Exception as e:
+        return {"error": f"Failed to load CSV data: {str(e)}"}
 
-def read_sqlite_data(db_path, product_id=None):
-    products = []
+
+def load_from_sqlite():
+    """Load product data from SQLite database"""
+    if not os.path.exists(DB_FILE):
+        return {"error": "SQLite database file not found."}
     try:
-        conn = sqlite3.connect(db_path)
+        conn = sqlite3.connect(DB_FILE)
         cursor = conn.cursor()
-        if product_id:
-            cursor.execute("SELECT id, name, category, price FROM Products WHERE id = ?", (product_id,))
-        else:
-            cursor.execute("SELECT id, name, category, price FROM Products")
+        cursor.execute("SELECT id, name, category, price FROM Products")
         rows = cursor.fetchall()
+        products = []
         for row in rows:
             products.append({
                 "id": row[0],
@@ -52,48 +58,44 @@ def read_sqlite_data(db_path, product_id=None):
                 "price": row[3]
             })
         conn.close()
-    except Exception:
-        return None  # signal an error
-    return products
+        return products
+    except Exception as e:
+        return {"error": f"Database error: {str(e)}"}
+
+
+@app.route('/')
+def home():
+    return '''
+        <h2>Welcome to My Product App</h2>
+        <ul>
+            <li><a href="/products?source=json">View Products (JSON)</a></li>
+            <li><a href="/products?source=csv">View Products (CSV)</a></li>
+            <li><a href="/products?source=sql">View Products (SQLite)</a></li>
+        </ul>
+    '''
+
 
 @app.route('/products')
-def products():
+def display_products():
+    """Display products from the selected source"""
     source = request.args.get('source')
-    id_param = request.args.get('id')
-    product_list = []
-    error_message = None
-
-    try:
-        if id_param:
-            product_id = int(id_param)
-        else:
-            product_id = None
-    except ValueError:
-        return render_template('product_display.html', error="Invalid ID format")
-
-    # Traitement selon la source
     if source == 'json':
-        path = os.path.join(os.path.dirname(__file__), 'products.json')
-        product_list = read_json_data(path)
+        data = load_from_json()
     elif source == 'csv':
-        path = os.path.join(os.path.dirname(__file__), 'products.csv')
-        product_list = read_csv_data(path)
+        data = load_from_csv()
     elif source == 'sql':
-        path = os.path.join(os.path.dirname(__file__), 'products.db')
-        product_list = read_sqlite_data(path, product_id)
-        if product_list is None:
-            error_message = "Database error"
+        data = load_from_sqlite()
     else:
-        error_message = "Wrong source"
-        return render_template('product_display.html', error=error_message)
+        return "Wrong source", 400
 
-    # Si source != sql, filtrage manuel de l’ID
-    if source in ['json', 'csv'] and id_param:
-        product_list = [p for p in product_list if int(p.get('id', -1)) == product_id]
-        if not product_list:
-            error_message = "Product not found"
+    if isinstance(data, dict) and 'error' in data:
+    return render_template("product_display.html", error=data['error'], products=None)
 
-    return render_template('product_display.html', products=product_list, error=error_message)
+    return render_template("product_display.html", products=data, error=None)
 
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
