@@ -89,13 +89,10 @@ def display_products():
         return "Wrong source", 400
 
     if isinstance(data, dict) and 'error' in data:
-    return render_template("product_display.html", error=data['error'], products=None)
+        return render_template("product_display.html", error=data['error'], products=None)
 
     return render_template("product_display.html", products=data, error=None)
 
 
-
 if __name__ == "__main__":
     app.run(debug=True)
-
-
