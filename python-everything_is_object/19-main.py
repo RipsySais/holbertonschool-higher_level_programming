@@ -11,10 +11,3 @@ print(new_list)
 
 print(new_list == my_list)
 print(new_list is my_list)
-
-guillaume@ubuntu:~/$ ./19-main.py
-[1, 2, 3]
-[1, 2, 3]
-[1, 2, 3]
-True
-False
