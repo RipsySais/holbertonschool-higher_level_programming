@@ -1,45 +1,48 @@
 #!/usr/bin/env python3
-
 """
-Script that lists all states from the database hbtn_0e_0_usa
+Script qui liste tous les états de la base de données hbtn_0e_0_usa
+triés par id croissant
 """
 
 import MySQLdb
 import sys
 
 if __name__ == "__main__":
-    # Vérifier qu'on a les 3 arguments requis
+    # Vérification du nombre d'arguments
     if len(sys.argv) != 4:
-        print("Usage: {} <mysql_username> <mysql_password> <database_name>".format(sys.argv[0]))
+        print("Usage: {} <mysql username> <mysql password> <database name>".format(sys.argv[0]))
         sys.exit(1)
 
-    # Recuperer les arguments de la ligne de commande
+    # Récupération des arguments
     username = sys.argv[1]
     password = sys.argv[2]
-    database = sys.argv[3]
-    
-    # Se connecter à la base de données MySQL
-    db = MySQLdb.connect(
-        host="localhost",
-        port=3306,
-        user=username,
-        passwd="nouveau_mdp",
-        db=database
-    )
-    
-    # Créer un curseur pour exécuter les requêtes
-    cursor = db.cursor()
-    
-    # Exécuter la requête pour récupérer tous les états triés par id
-    cursor.execute("SELECT * FROM states ORDER BY id ASC")
-    
-    # Récupérer tous les résultats
-    results = cursor.fetchall()
-    
-    # Afficher les résultats
-    for row in results:
-        print(row)
-    
-    # Fermer le curseur et la connexion
-    cursor.close()
-    db.close()
+    db_name = sys.argv[3]
+
+    try:
+        # Connexion à la base de données
+        db = MySQLdb.connect(
+            host="localhost",
+            port=3306,
+            user=username,
+            passwd=password,
+            db=db_name
+        )
+
+        # Création du curseur
+        cursor = db.cursor()
+
+        # Exécution de la requête
+        cursor.execute("SELECT * FROM states ORDER BY id ASC")
+
+        # Récupération et affichage des résultats
+        for state in cursor.fetchall():
+            print(state)
+
+    except MySQLdb.Error as e:
+        print("MySQL Error:", e)
+        sys.exit(1)
+
+    finally:
+        # Fermeture de la connexion
+        if 'db' in locals():
+            db.close()
